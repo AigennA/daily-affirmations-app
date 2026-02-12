@@ -1,4 +1,5 @@
-import { StyleSheet, ScrollView, View, Text } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, Pressable } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useEffect, useState, useCallback } from 'react';
 import { ScreenContainer } from '@/components/screen-container';
@@ -11,7 +12,7 @@ import { useAppContext } from '@/contexts/app-context';
 import { useTranslations } from '@/hooks/use-translations';
 import { getDailyAffirmation } from '@/services/daily';
 import affirmations from '@/data/affirmations';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, BorderRadius } from '@/constants/theme';
 import type { Affirmation } from '@/types';
 
 function getGreeting(t: ReturnType<typeof useTranslations>): string {
@@ -80,8 +81,16 @@ export default function TodayScreen() {
         <AffirmationCard
           affirmation={current}
           language={state.settings.language}
-          onNext={handleNext}
         />
+
+        {/* New Affirmation Button */}
+        <Pressable
+          style={({ pressed }) => [styles.nextButton, pressed && styles.nextButtonPressed]}
+          onPress={handleNext}
+        >
+          <Ionicons name="sparkles" size={20} color={Colors.background} />
+          <Text style={styles.nextButtonText}>{t.newAffirmation}</Text>
+        </Pressable>
 
         <GoldDivider />
 
@@ -121,6 +130,24 @@ const styles = StyleSheet.create({
     color: Colors.gold,
     marginTop: Spacing.xs,
     fontWeight: '500',
+  },
+  nextButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.gold,
+    borderRadius: BorderRadius.lg,
+    paddingVertical: Spacing.md,
+    gap: Spacing.sm,
+  },
+  nextButtonPressed: {
+    opacity: 0.8,
+    transform: [{ scale: 0.98 }],
+  },
+  nextButtonText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: Colors.background,
   },
   loading: {
     flex: 1,

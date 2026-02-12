@@ -1,5 +1,4 @@
-import { StyleSheet, View, Text, Pressable } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { StyleSheet, View, Text } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -18,14 +17,12 @@ interface AffirmationCardProps {
   affirmation: Affirmation;
   language: Language;
   showActions?: boolean;
-  onNext?: () => void;
 }
 
 export function AffirmationCard({
   affirmation,
   language,
   showActions = true,
-  onNext,
 }: AffirmationCardProps) {
   const textOpacity = useSharedValue(1);
   const glowOpacity = useSharedValue(0.3);
@@ -74,11 +71,6 @@ export function AffirmationCard({
         {showActions && (
           <View style={styles.actions}>
             <FavoriteButton affirmationId={affirmation.id} />
-            {onNext && (
-              <Pressable onPress={onNext} hitSlop={12}>
-                <Ionicons name="refresh" size={24} color={Colors.gold} />
-              </Pressable>
-            )}
             <ShareButton affirmation={affirmation} language={language} />
           </View>
         )}

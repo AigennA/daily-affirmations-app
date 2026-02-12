@@ -224,6 +224,71 @@ async function generate() {
     .toFile(path.join(OUT, 'favicon.png'));
   console.log('  favicon.png (48x48)');
 
+  // Google Play feature graphic 1024x500
+  const featureSvg = `
+    <svg width="1024" height="500" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="fgGlow" cx="25%" cy="50%" r="60%">
+          <stop offset="0%" stop-color="${PURPLE}" stop-opacity="0.12"/>
+          <stop offset="100%" stop-color="${BG}" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="fgGlow2" cx="80%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="${GOLD}" stop-opacity="0.08"/>
+          <stop offset="100%" stop-color="${BG}" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="fgSun" cx="40%" cy="35%" r="60%">
+          <stop offset="0%" stop-color="${GOLD_LIGHT}"/>
+          <stop offset="100%" stop-color="${GOLD}"/>
+        </radialGradient>
+      </defs>
+      <rect width="1024" height="500" fill="${BG}"/>
+      <rect width="1024" height="500" fill="url(#fgGlow)"/>
+      <rect width="1024" height="500" fill="url(#fgGlow2)"/>
+
+      <!-- Sun icon on the left -->
+      ${(() => {
+        const cx = 200, cy = 250, r = 70, rayLen = 35, rayStart = 80;
+        let rays = '';
+        for (let i = 0; i < 12; i++) {
+          const angle = (i * 30) * Math.PI / 180;
+          const x1 = cx + Math.cos(angle) * rayStart;
+          const y1 = cy + Math.sin(angle) * rayStart;
+          const x2 = cx + Math.cos(angle) * (rayStart + rayLen);
+          const y2 = cy + Math.sin(angle) * (rayStart + rayLen);
+          rays += '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="${GOLD_LIGHT}" stroke-width="'+(i%2===0?6:3.5)+'" stroke-linecap="round" opacity="'+(i%2===0?0.9:0.5)+'"/>';
+        }
+        return rays;
+      })()}
+      <circle cx="200" cy="250" r="70" fill="url(#fgSun)"/>
+      <g transform="translate(200, 253) scale(0.84)">
+        <path d="M0,-28 C-8,-20 -14,-8 0,5 C14,-8 8,-20 0,-28Z" fill="${BG}" opacity="0.6"/>
+        <path d="M-18,-15 C-16,-8 -10,2 0,5 C-6,-4 -12,-10 -18,-15Z" fill="${BG}" opacity="0.4"/>
+        <path d="M18,-15 C16,-8 10,2 0,5 C6,-4 12,-10 18,-15Z" fill="${BG}" opacity="0.4"/>
+      </g>
+
+      <!-- App name text -->
+      <text x="380" y="220" font-family="Arial, sans-serif" font-size="52" font-weight="bold" fill="${GOLD}">Daily Affirmations</text>
+      <text x="380" y="290" font-family="Arial, sans-serif" font-size="28" font-weight="normal" fill="${GOLD_LIGHT}" opacity="0.7">Mood Booster</text>
+
+      <!-- Decorative line -->
+      <line x1="380" y1="310" x2="700" y2="310" stroke="${GOLD}" stroke-width="1" opacity="0.3"/>
+
+      <!-- Tagline -->
+      <text x="380" y="345" font-family="Arial, sans-serif" font-size="18" fill="#A0A0B0">One step stronger every day</text>
+
+      <!-- Sparkles -->
+      <line x1="820" y1="130" x2="820" y2="160" stroke="${GOLD_LIGHT}" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+      <line x1="805" y1="145" x2="835" y2="145" stroke="${GOLD_LIGHT}" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+      <line x1="900" y1="350" x2="900" y2="370" stroke="${GOLD_LIGHT}" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+      <line x1="890" y1="360" x2="910" y2="360" stroke="${GOLD_LIGHT}" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+    </svg>
+  `;
+  await sharp(Buffer.from(featureSvg))
+    .resize(1024, 500)
+    .png()
+    .toFile(path.join(OUT, 'feature-graphic.png'));
+  console.log('  feature-graphic.png (1024x500)');
+
   console.log('Done!');
 }
 

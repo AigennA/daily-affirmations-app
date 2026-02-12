@@ -70,6 +70,7 @@ type TranslationKeys = {
   // Misc
   noData: string;
   today: string;
+  newAffirmation: string;
 };
 
 const translations: Record<Language, TranslationKeys> = {
@@ -124,6 +125,7 @@ const translations: Record<Language, TranslationKeys> = {
     noCustomYetDesc: 'Kendi olumlamalarını ekleyerek koleksiyonunu kişiselleştir',
     noData: 'Henüz veri yok',
     today: 'Bugün',
+    newAffirmation: 'Yeni Söz Getir',
   },
   en: {
     tabToday: 'Today',
@@ -176,6 +178,7 @@ const translations: Record<Language, TranslationKeys> = {
     noCustomYetDesc: 'Personalize your collection by adding your own affirmations',
     noData: 'No data yet',
     today: 'Today',
+    newAffirmation: 'New Affirmation',
   },
   sv: {
     tabToday: 'Idag',
@@ -228,6 +231,7 @@ const translations: Record<Language, TranslationKeys> = {
     noCustomYetDesc: 'Personalisera din samling genom att lägga till egna affirmationer',
     noData: 'Ingen data ännu',
     today: 'Idag',
+    newAffirmation: 'Ny Affirmation',
   },
 };
 
