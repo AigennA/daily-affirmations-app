@@ -69,17 +69,33 @@ export default function ProfileScreen() {
         {/* Settings */}
         <Text style={styles.sectionTitle}>{t.settings}</Text>
 
-        <Pressable
-          style={({ pressed }) => [styles.settingItem, pressed && styles.pressed]}
-          onPress={() => router.push('/settings/language')}
-        >
-          <Ionicons name="language" size={22} color={Colors.gold} />
-          <View style={styles.settingContent}>
-            <Text style={styles.settingLabel}>{t.language}</Text>
-            <Text style={styles.settingValue}>{langLabel}</Text>
-          </View>
-          <Ionicons name="chevron-forward" size={20} color={Colors.textSecondary} />
-        </Pressable>
+        <View style={styles.settingsGroup}>
+          <Pressable
+            style={({ pressed }) => [styles.settingItem, pressed && styles.pressed]}
+            onPress={() => router.push('/settings/my-affirmations' as any)}
+          >
+            <Ionicons name="create-outline" size={22} color={Colors.gold} />
+            <View style={styles.settingContent}>
+              <Text style={styles.settingLabel}>{t.myAffirmations}</Text>
+              <Text style={styles.settingValue}>
+                {state.customAffirmations.length} {t.affirmations}
+              </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={Colors.textSecondary} />
+          </Pressable>
+
+          <Pressable
+            style={({ pressed }) => [styles.settingItem, pressed && styles.pressed]}
+            onPress={() => router.push('/settings/language')}
+          >
+            <Ionicons name="language" size={22} color={Colors.gold} />
+            <View style={styles.settingContent}>
+              <Text style={styles.settingLabel}>{t.language}</Text>
+              <Text style={styles.settingValue}>{langLabel}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={Colors.textSecondary} />
+          </Pressable>
+        </View>
       </ScrollView>
     </ScreenContainer>
   );
@@ -129,6 +145,9 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: Colors.textSecondary,
     textAlign: 'center',
+  },
+  settingsGroup: {
+    gap: Spacing.sm,
   },
   settingItem: {
     flexDirection: 'row',

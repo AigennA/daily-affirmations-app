@@ -47,6 +47,10 @@ export default function RootLayout() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
+            name="settings/my-affirmations"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
             name="onboarding"
             options={{ headerShown: false }}
           />

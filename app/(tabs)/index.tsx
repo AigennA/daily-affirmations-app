@@ -12,6 +12,7 @@ import { useTranslations } from '@/hooks/use-translations';
 import { getDailyAffirmation } from '@/services/daily';
 import affirmations from '@/data/affirmations';
 import { Colors, Spacing } from '@/constants/theme';
+import type { Affirmation } from '@/types';
 
 function getGreeting(t: ReturnType<typeof useTranslations>): string {
   const hour = new Date().getHours();
@@ -28,12 +29,19 @@ export default function TodayScreen() {
   const [current, setCurrent] = useState(daily);
 
   const handleNext = useCallback(() => {
+    // Build pool: built-in + custom affirmations
+    const customPool: Affirmation[] = state.customAffirmations.map((c) => ({
+      id: c.id,
+      categoryId: 'self-love',
+      text: { tr: c.text, en: c.text, sv: c.text },
+    }));
+    const pool = [...affirmations, ...customPool];
     let next;
     do {
-      next = affirmations[Math.floor(Math.random() * affirmations.length)];
-    } while (next.id === current.id && affirmations.length > 1);
+      next = pool[Math.floor(Math.random() * pool.length)];
+    } while (next.id === current.id && pool.length > 1);
     setCurrent(next);
-  }, [current.id]);
+  }, [current.id, state.customAffirmations]);
 
   useEffect(() => {
     if (!isLoading && !state.settings.onboardingDone) {

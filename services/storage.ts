@@ -5,6 +5,7 @@ const KEYS = {
   streak: '@da_streak',
   moods: '@da_moods',
   settings: '@da_settings',
+  customAffirmations: '@da_custom_affirmations',
 } as const;
 
 export async function loadFavorites(): Promise<string[]> {
@@ -54,4 +55,15 @@ export async function saveSettings(settings: {
   onboardingDone: boolean;
 }): Promise<void> {
   await AsyncStorage.setItem(KEYS.settings, JSON.stringify(settings));
+}
+
+export async function loadCustomAffirmations() {
+  const raw = await AsyncStorage.getItem(KEYS.customAffirmations);
+  return raw ? JSON.parse(raw) : [];
+}
+
+export async function saveCustomAffirmations(
+  items: { id: string; text: string; createdAt: string }[],
+): Promise<void> {
+  await AsyncStorage.setItem(KEYS.customAffirmations, JSON.stringify(items));
 }

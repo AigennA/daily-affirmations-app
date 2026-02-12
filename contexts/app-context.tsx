@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import type { AppState, Language, MoodValue, MoodEntry, StreakData, AppSettings } from '@/types';
+import type { AppState, Language, MoodValue, MoodEntry, StreakData, AppSettings, CustomAffirmation } from '@/types';
 import * as storage from '@/services/storage';
 import { updateStreak } from '@/services/streak';
 import { getTodayDateString } from '@/services/daily';
@@ -12,6 +12,8 @@ interface AppContextValue {
   setMood: (mood: MoodValue) => void;
   setLanguage: (lang: Language) => void;
   completeOnboarding: () => void;
+  addCustomAffirmation: (text: string) => void;
+  deleteCustomAffirmation: (id: string) => void;
 }
 
 const defaultState: AppState = {
@@ -20,6 +22,7 @@ const defaultState: AppState = {
   moods: [],
   settings: { language: 'tr', onboardingDone: false },
   todayMood: null,
+  customAffirmations: [],
 };
 
 const AppContext = createContext<AppContextValue>({
@@ -30,6 +33,8 @@ const AppContext = createContext<AppContextValue>({
   setMood: () => {},
   setLanguage: () => {},
   completeOnboarding: () => {},
+  addCustomAffirmation: () => {},
+  deleteCustomAffirmation: () => {},
 });
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
@@ -38,11 +43,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     (async () => {
-      const [favorites, streak, moods, settings] = await Promise.all([
+      const [favorites, streak, moods, settings, customAffirmations] = await Promise.all([
         storage.loadFavorites(),
         storage.loadStreak(),
         storage.loadMoods(),
         storage.loadSettings(),
+        storage.loadCustomAffirmations(),
       ]);
 
       const updatedStreak = updateStreak(streak);
@@ -59,6 +65,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         moods,
         settings,
         todayMood: todayEntry ? todayEntry.mood : null,
+        customAffirmations,
       });
       setIsLoading(false);
     })();
@@ -106,6 +113,27 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  const addCustomAffirmation = useCallback((text: string) => {
+    setState((prev) => {
+      const item: CustomAffirmation = {
+        id: `custom-${Date.now()}`,
+        text: text.trim(),
+        createdAt: new Date().toISOString(),
+      };
+      const next = [...prev.customAffirmations, item];
+      storage.saveCustomAffirmations(next);
+      return { ...prev, customAffirmations: next };
+    });
+  }, []);
+
+  const deleteCustomAffirmation = useCallback((id: string) => {
+    setState((prev) => {
+      const next = prev.customAffirmations.filter((a) => a.id !== id);
+      storage.saveCustomAffirmations(next);
+      return { ...prev, customAffirmations: next };
+    });
+  }, []);
+
   return (
     <AppContext.Provider
       value={{
@@ -116,6 +144,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setMood,
         setLanguage,
         completeOnboarding,
+        addCustomAffirmation,
+        deleteCustomAffirmation,
       }}
     >
       {children}

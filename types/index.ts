@@ -48,10 +48,17 @@ export interface AppSettings {
   onboardingDone: boolean;
 }
 
+export interface CustomAffirmation {
+  id: string;
+  text: string;
+  createdAt: string; // ISO date
+}
+
 export interface AppState {
   favorites: string[]; // affirmation ids
   streak: StreakData;
   moods: MoodEntry[];
   settings: AppSettings;
   todayMood: MoodValue | null;
+  customAffirmations: CustomAffirmation[];
 }

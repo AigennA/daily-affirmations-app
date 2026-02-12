@@ -57,6 +57,16 @@ type TranslationKeys = {
   chooseLanguage: string;
   getStarted: string;
 
+  // Custom Affirmations
+  myAffirmations: string;
+  addAffirmation: string;
+  writeYourOwn: string;
+  enterAffirmation: string;
+  add: string;
+  delete: string;
+  noCustomYet: string;
+  noCustomYetDesc: string;
+
   // Misc
   noData: string;
   today: string;
@@ -104,6 +114,14 @@ const translations: Record<Language, TranslationKeys> = {
     welcomeDesc: 'Her gün bir adım daha güçlü. Olumlamalarla hayatını dönüştür.',
     chooseLanguage: 'Dilini Seç',
     getStarted: 'Başlayalım',
+    myAffirmations: 'Sözlerim',
+    addAffirmation: 'Söz Ekle',
+    writeYourOwn: 'Kendi sözünü yaz',
+    enterAffirmation: 'Olumlamanı buraya yaz...',
+    add: 'Ekle',
+    delete: 'Sil',
+    noCustomYet: 'Henüz kendi sözün yok',
+    noCustomYetDesc: 'Kendi olumlamalarını ekleyerek koleksiyonunu kişiselleştir',
     noData: 'Henüz veri yok',
     today: 'Bugün',
   },
@@ -148,6 +166,14 @@ const translations: Record<Language, TranslationKeys> = {
     welcomeDesc: 'One step stronger every day. Transform your life with affirmations.',
     chooseLanguage: 'Choose Your Language',
     getStarted: 'Get Started',
+    myAffirmations: 'My Affirmations',
+    addAffirmation: 'Add Affirmation',
+    writeYourOwn: 'Write your own',
+    enterAffirmation: 'Write your affirmation here...',
+    add: 'Add',
+    delete: 'Delete',
+    noCustomYet: 'No custom affirmations yet',
+    noCustomYetDesc: 'Personalize your collection by adding your own affirmations',
     noData: 'No data yet',
     today: 'Today',
   },
@@ -192,6 +218,14 @@ const translations: Record<Language, TranslationKeys> = {
     welcomeDesc: 'Ett steg starkare varje dag. Förvandla ditt liv med affirmationer.',
     chooseLanguage: 'Välj Ditt Språk',
     getStarted: 'Kom Igång',
+    myAffirmations: 'Mina Affirmationer',
+    addAffirmation: 'Lägg till Affirmation',
+    writeYourOwn: 'Skriv din egen',
+    enterAffirmation: 'Skriv din affirmation här...',
+    add: 'Lägg till',
+    delete: 'Radera',
+    noCustomYet: 'Inga egna affirmationer ännu',
+    noCustomYetDesc: 'Personalisera din samling genom att lägga till egna affirmationer',
     noData: 'Ingen data ännu',
     today: 'Idag',
   },
