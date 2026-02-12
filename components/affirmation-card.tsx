@@ -1,4 +1,5 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Pressable } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -17,13 +18,16 @@ interface AffirmationCardProps {
   affirmation: Affirmation;
   language: Language;
   showActions?: boolean;
+  onNext?: () => void;
 }
 
 export function AffirmationCard({
   affirmation,
   language,
   showActions = true,
+  onNext,
 }: AffirmationCardProps) {
+  const textOpacity = useSharedValue(1);
   const glowOpacity = useSharedValue(0.3);
 
   useEffect(() => {
@@ -41,6 +45,15 @@ export function AffirmationCard({
     opacity: glowOpacity.value,
   }));
 
+  const textAnimStyle = useAnimatedStyle(() => ({
+    opacity: textOpacity.value,
+  }));
+
+  useEffect(() => {
+    textOpacity.value = 0;
+    textOpacity.value = withTiming(1, { duration: 400 });
+  }, [affirmation.id]);
+
   return (
     <Animated.View entering={FadeIn.duration(600)} style={styles.container}>
       {/* Gold glow border */}
@@ -54,11 +67,18 @@ export function AffirmationCard({
           <View style={styles.accentLine} />
         </View>
 
-        <Text style={styles.text}>{affirmation.text[language]}</Text>
+        <Animated.View style={textAnimStyle}>
+          <Text style={styles.text}>{affirmation.text[language]}</Text>
+        </Animated.View>
 
         {showActions && (
           <View style={styles.actions}>
             <FavoriteButton affirmationId={affirmation.id} />
+            {onNext && (
+              <Pressable onPress={onNext} hitSlop={12}>
+                <Ionicons name="refresh" size={24} color={Colors.gold} />
+              </Pressable>
+            )}
             <ShareButton affirmation={affirmation} language={language} />
           </View>
         )}

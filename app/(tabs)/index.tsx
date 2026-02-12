@@ -1,6 +1,6 @@
 import { StyleSheet, ScrollView, View, Text } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useEffect } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { ScreenContainer } from '@/components/screen-container';
 import { GradientBackground } from '@/components/gradient-background';
 import { AffirmationCard } from '@/components/affirmation-card';
@@ -10,6 +10,7 @@ import { GoldDivider } from '@/components/gold-divider';
 import { useAppContext } from '@/contexts/app-context';
 import { useTranslations } from '@/hooks/use-translations';
 import { getDailyAffirmation } from '@/services/daily';
+import affirmations from '@/data/affirmations';
 import { Colors, Spacing } from '@/constants/theme';
 
 function getGreeting(t: ReturnType<typeof useTranslations>): string {
@@ -24,6 +25,15 @@ export default function TodayScreen() {
   const { state, isLoading } = useAppContext();
   const t = useTranslations();
   const daily = getDailyAffirmation();
+  const [current, setCurrent] = useState(daily);
+
+  const handleNext = useCallback(() => {
+    let next;
+    do {
+      next = affirmations[Math.floor(Math.random() * affirmations.length)];
+    } while (next.id === current.id && affirmations.length > 1);
+    setCurrent(next);
+  }, [current.id]);
 
   useEffect(() => {
     if (!isLoading && !state.settings.onboardingDone) {
@@ -60,8 +70,9 @@ export default function TodayScreen() {
 
         {/* Daily Affirmation Card */}
         <AffirmationCard
-          affirmation={daily}
+          affirmation={current}
           language={state.settings.language}
+          onNext={handleNext}
         />
 
         <GoldDivider />
