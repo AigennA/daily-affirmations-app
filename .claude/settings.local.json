@@ -1,7 +1,5 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(git log:*)"
-    ]
+    "allow": ["Bash(git log:*)"]
   }
 }
